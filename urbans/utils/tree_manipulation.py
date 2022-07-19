@@ -86,6 +86,14 @@ def translate_tree_grammar(tree: nltk.Tree, grammar_substitutions: dict):
  
                 
     translated_grammar_sentence = " ".join(ptree.leaves())
+
+    # ADD: translated grammar sentence together with its tags
+    translated_grammar_tagged_sentence_dic = {}
+    for tree_depth_2 in ptree.subtrees(lambda ptree: ptree.height() == 2):
+        translated_grammar_tagged_sentence_dic[tree_depth_2] = tree_depth_2.leaves()[0]
+    
+    return translated_grammar_tagged_sentence_dic, num_subs   
+    
     return translated_grammar_sentence, num_subs
 
 def translate_sentence_words(sentence, src_to_tgt_dictionary):
