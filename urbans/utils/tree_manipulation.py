@@ -84,22 +84,23 @@ def translate_tree_grammar(tree: nltk.Tree, grammar_substitutions: dict):
                     # Change tree nodes positions thanks to new displacement
                     swap_tree_given_left(sub, disp, new_words)
  
-                
+    
     translated_grammar_sentence = " ".join(ptree.leaves())
 
     # ADD: translated grammar sentence together with its tags
-    translated_grammar_tagged_sentence_dic = {}
+    word_to_tag_dic = {}
     for tree_depth_2 in ptree.subtrees(lambda ptree: ptree.height() == 2):
-        translated_grammar_tagged_sentence_dic[tree_depth_2] = tree_depth_2.leaves()[0]
+        word_to_tag_dic[tree_depth_2.leaves()[0]] = tree_depth_2.label()
     
-    return translated_grammar_tagged_sentence_dic, num_subs   
+    return translated_grammar_sentence, word_to_tag_dic, num_subs   
     
     return translated_grammar_sentence, num_subs
 
-def translate_sentence_words(sentence, src_to_tgt_dictionary):
+def translate_sentence_words(sentence, word_to_tag_dict, src_to_tgt_dictionary):
     words_list = []
 
     for word in sentence.split():
+        tag = word_to_tag_dict.get(word,)
         target_word = src_to_tgt_dictionary.get(word,word)
 
         if isinstance(target_word, list):
@@ -116,10 +117,10 @@ def translate_trees_grammar(list_trees: List[nltk.Tree], src_to_tgt_grammar, src
 
     for tree in list_trees:
         # Translate grammar
-        trans_gram_sentence, num_subs = translate_tree_grammar(tree, src_to_tgt_grammar)
+        trans_gram_sentence, word_to_tag_dict, num_subs = translate_tree_grammar(tree, src_to_tgt_grammar)
 
         # Translate words
-        trans_lang_sentence = translate_sentence_words(trans_gram_sentence, src_to_tgt_dictionary)
+        trans_lang_sentence = translate_sentence_words(trans_gram_sentence, word_to_tag_dict, src_to_tgt_dictionary)
         
         # Append to trans map
         trans_map[trans_lang_sentence] = num_subs
