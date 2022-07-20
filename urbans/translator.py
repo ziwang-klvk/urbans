@@ -33,6 +33,21 @@ class Translator:
                                     "NP1 -> JJ NN": "NP1 -> NN JJ"
                                         }
             src_to_tgt_dictionary (Dict): Dictionary of word-by-word transition from src language to target language
+            UPDATE: The dictionary now mapping the word based on its POS tag to avoid ambiguity
+            E.g: en_to_jp_dict = {
+                                "Vte":
+                                    {
+                                    "eat":"tabete",
+                                    "drink":"nonnde",
+                                    ...
+                                    }
+                                "Vorg":
+                                    {
+                                    "eat":"taberu",
+                                    "drink":"nomu"
+                                    }
+                                }
+
             E.g: en_to_vi_dict = {
                                 "I":"tôi",
                                 "go":"đi",
