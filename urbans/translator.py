@@ -65,6 +65,45 @@ class Translator:
     def __process_text_input(txt):
         return remove_trailing_space(txt)
 
+    def parse_words(self, sentences: List[str] or str):
+        """
+        Parse the sentences to get the word translations should be provided in the dictionary
+        Args:
+            sentences (List[str]): A list of str-typed sentences
+        """
+        if isinstance(sentences,str):
+            sentences = [sentences]
+        
+        tag_word_set = {}
+        failed_sentences = []
+        ambiguity_sentences = {}
+
+        for sentence in sentences:
+            sentence = self.__process_text_input(sentence)
+            trees = self.parser.parse(sentence.split())
+            list_trees = [tree for tree in trees]
+
+
+            if len(list_trees) == 0:
+                failed_sentences.append(sentence)
+                continue
+            # record sentences occuring ambiguity together with their parses
+            if len(list_trees) > 1:
+                ambiguity_sentences[sentence] = list_trees
+                continue
+
+            for t in list_trees:
+                for tree_depth_2 in t.subtrees(lambda ptree: ptree.height() == 2):
+                    # creat a set for new tag
+                    if tree_depth_2.label() not in tag_word_set:
+                        tag_word_set[tree_depth_2.label()] = set()
+                    tag_word_set[tree_depth_2.label()].add(tree_depth_2.leaves()[0])
+            
+        print(f"Word parsing completed! {len(failed_sentences)} sentences failed. {len(ambiguity_sentences)} sentences occurred ambiguity.")
+        
+        return tag_word_set, failed_sentences, ambiguity_sentences
+
+
     def translate(self, sentences: List[str] or str, allow_multiple_translation = False):
         """
         Translate a list of sentences
