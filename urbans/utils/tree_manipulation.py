@@ -102,7 +102,7 @@ def translate_sentence_words(sentence, word_to_tag_dict, src_to_tgt_dictionary):
 
     for word in sentence:
         tag = word_to_tag_dict[word]
-        word_dict = src_to_tgt_dictionary[tag]
+        word_dict = src_to_tgt_dictionary.get(tag,{})
         target_word = word_dict.get(word,word)
 
         if isinstance(target_word, list):
