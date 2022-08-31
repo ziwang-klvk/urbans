@@ -67,7 +67,7 @@ class Translator:
 
     def parse_words(self, sentences: List[str] or str):
         """
-        Parse the sentences to get the word translations should be provided in the dictionary
+        Parse the sentences to get the words and their tags that should be provided in the translation dictionary
         Args:
             sentences (List[str]): A list of str-typed sentences
         """
