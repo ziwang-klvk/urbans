@@ -1,7 +1,7 @@
 import setuptools
 
-with open("README.md", "rb") as fh:
-    long_description = fh.read()
+# with open("README.md", "rb") as fh:
+#     long_description = fh.read()
 
 setuptools.setup(
      name='urbans',
