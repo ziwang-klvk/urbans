@@ -11,7 +11,7 @@ setuptools.setup(
      description="URBANS: Universal Rule-based Machine Translation NLP Toolkit",
      long_description=long_description,
      long_description_content_type="text/markdown",
-     url="https://github.com/urbans/urbans",
+     url="https://github.com/ziwang-klvk/urbans",
      packages=setuptools.find_packages(exclude=['docs', 'tests', 'experiments']),
      classifiers=[
          "Programming Language :: Python :: 3",
