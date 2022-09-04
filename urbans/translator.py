@@ -90,7 +90,6 @@ class Translator:
             # record sentences occuring ambiguity together with their parses
             if len(list_trees) > 1:
                 ambiguity_sentences[sentence] = list_trees
-                continue
 
             for t in list_trees:
                 for tree_depth_2 in t.subtrees(lambda ptree: ptree.height() == 2):
