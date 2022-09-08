@@ -116,6 +116,8 @@ class Translator:
 
         translated_sentences = []
         failed_sentences = []
+        # A trans_maps collect all translated versions occurred by ambiguities of sentences, together with their displacements. 
+        trans_maps = []
 
         for sentence in sentences:
             sentence = self.__process_text_input(sentence)
@@ -124,7 +126,9 @@ class Translator:
             if len(list_trees) == 0:
                 failed_sentences.append(sentence)
                 continue
-            trans_sentence = translate_trees_grammar(list_trees, self.src_to_tgt_grammar, self.src_to_tgt_dictionary)
+            trans_sentence, trans_map = translate_trees_grammar(list_trees, self.src_to_tgt_grammar, self.src_to_tgt_dictionary)
+            if len(trans_map) > 1:
+                trans_maps.append(trans_map)
             translated_sentences.append(trans_sentence)
 
         # String to display failed sentence
@@ -133,4 +137,4 @@ class Translator:
         if len(failed_sentences) > 0:
             raise ValueError(f"Please check your grammar again, failed to parse these sentences: \n{failed_sentences}")
 
-        return translated_sentences
+        return translated_sentences, trans_maps

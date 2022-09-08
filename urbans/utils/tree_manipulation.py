@@ -126,8 +126,8 @@ def translate_trees_grammar(list_trees: List[nltk.Tree], src_to_tgt_grammar, src
         
         # Append to trans map
         trans_map[trans_lang_sentence] = num_subs
-    # Return translation that has the most displacement
-    return max(trans_map, key=trans_map.get)
+    # Return translation that has the most displacement, also the trans_map
+    return max(trans_map, key=trans_map.get), trans_map
 
 def calculate_displacement(src_grammar, tgt_grammar):
     """Calculate displacement between 2 grammar. E.g: S -> A B C to S -> B C A has displacement of [1 2 0]"""
