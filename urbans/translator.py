@@ -3,6 +3,7 @@ from .utils.tree_manipulation import translate_trees_grammar
 from .utils.misc import remove_trailing_space
 import nltk
 from nltk.parse.chart import BottomUpLeftCornerChartParser as Parser
+from tqdm import tqdm
 
 class Translator:
     """"""
@@ -119,7 +120,7 @@ class Translator:
         # A trans_maps collect all translated versions occurred by ambiguities of sentences, together with their displacements. 
         trans_maps = []
 
-        for sentence in sentences:
+        for sentence in tqdm(sentences):
             sentence = self.__process_text_input(sentence)
             trees = self.parser.parse(sentence.split())
             list_trees = [tree for tree in trees]
