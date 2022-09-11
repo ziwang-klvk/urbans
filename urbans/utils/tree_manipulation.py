@@ -19,11 +19,15 @@ def swap_tree_given_left(left_tree: nltk.Tree, displacement: List[int], new_word
         # disp = -1 indicates that is a new word, skip
         if disp == -1:
             continue
-        nodes.append(right_tree)
-
-        right_tree = right_tree.right_sibling()
+        
         if right_tree == None:
             break
+        
+        nodes.append(right_tree)
+
+
+        right_tree = right_tree.right_sibling()
+        
 
     # Remove all siblings and left-most self
     for node in nodes:
