@@ -115,7 +115,7 @@ def translate_sentence_words(sentence, word_to_tag_dict, src_to_tgt_dictionary):
 
     return ' '.join(words_list)
 
-def translate_trees_grammar(list_trees: List[nltk.Tree], src_to_tgt_grammar, src_to_tgt_dictionary):
+def translate_trees_grammar(list_trees: List[nltk.Tree], src_to_tgt_grammar, src_to_tgt_dictionary, remove_space):
 
     # translated sentence map with number of grammar substitution found
     trans_map = {}
@@ -126,7 +126,10 @@ def translate_trees_grammar(list_trees: List[nltk.Tree], src_to_tgt_grammar, src
 
         # Translate words
         trans_lang_sentence = translate_sentence_words(trans_gram_sentence, word_to_tag_dict, src_to_tgt_dictionary)
-        
+        # remove word boundary spaces for certain languages
+        if remove_space:
+            trans_lang_sentence.replace(" ","")
+
         # Append to trans map
         trans_map[trans_lang_sentence] = num_subs
     # Return translation that has the most displacement, also the trans_map
