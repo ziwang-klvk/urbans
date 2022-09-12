@@ -79,7 +79,7 @@ class Translator:
         failed_sentences = []
         ambiguity_sentences = {}
 
-        for sentence in sentences:
+        for sentence in tqdm(sentences):
             sentence = self.__process_text_input(sentence)
             trees = self.parser.parse(sentence.split())
             list_trees = [tree for tree in trees]

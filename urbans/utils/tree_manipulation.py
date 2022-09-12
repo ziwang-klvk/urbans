@@ -128,7 +128,7 @@ def translate_trees_grammar(list_trees: List[nltk.Tree], src_to_tgt_grammar, src
         trans_lang_sentence = translate_sentence_words(trans_gram_sentence, word_to_tag_dict, src_to_tgt_dictionary)
         # remove word boundary spaces for certain languages
         if remove_space:
-            trans_lang_sentence.replace(" ","")
+            trans_lang_sentence = trans_lang_sentence.replace(" ","")
 
         # Append to trans map
         trans_map[trans_lang_sentence] = num_subs
