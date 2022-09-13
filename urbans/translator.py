@@ -104,7 +104,7 @@ class Translator:
         return tag_word_set, failed_sentences, ambiguity_sentences
 
 
-    def translate(self, sentences: List[str] or str, remove_space = False, allow_multiple_translation = False):
+    def translate(self, sentences: List[str] or str, remove_space = False, prefered_pattern=[], allow_multiple_translation = False):
         """
         Translate a list of sentences
         Args:
@@ -128,7 +128,7 @@ class Translator:
             if len(list_trees) == 0:
                 failed_sentences.append(sentence)
                 continue
-            trans_sentence, trans_map = translate_trees_grammar(list_trees, self.src_to_tgt_grammar, self.src_to_tgt_dictionary, remove_space=remove_space)
+            trans_sentence, trans_map = translate_trees_grammar(list_trees, self.src_to_tgt_grammar, self.src_to_tgt_dictionary, remove_space=remove_space, prefered_pattern=prefered_pattern)
             if len(trans_map) > 1:
                 trans_maps.append(trans_map)
             translated_sentences.append(trans_sentence)

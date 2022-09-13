@@ -63,6 +63,32 @@ def build_grammar_str_from_left_most(tree: nltk.Tree):
                 right_pt = right_pt.right_sibling()
     return grammar_str
 
+def disambiguity_based_on_pattern(tree_list, prefered_pattern):
+    """
+    tree-level disambiguity based on the prefered patterns.
+    The method returns the matched parse trees if any, otherwise returns all trees as is.
+    """
+    matched_tree = []
+    unmatched_tree = []
+    for tree in tree_list:
+        grammar_str_set = set()
+        ptree = tree_to_ptree(tree)
+        for sub in ptree.subtrees():
+            grammar_str = build_grammar_str_from_left_most(sub)
+            grammar_str_set.add(grammar_str)
+        for pattern in prefered_pattern:
+            if pattern.issubset(grammar_str_set):
+                matched_tree.append(tree)
+                break
+            else:
+                unmatched_tree.append(tree)
+    if len(matched_tree) == 0:
+        return unmatched_tree
+    else:
+        return matched_tree
+        
+        
+
 
 def translate_tree_grammar(tree: nltk.Tree, grammar_substitutions: dict):
     """Translate tree grammar based on grammar substitution dict."""
@@ -115,10 +141,14 @@ def translate_sentence_words(sentence, word_to_tag_dict, src_to_tgt_dictionary):
 
     return ' '.join(words_list)
 
-def translate_trees_grammar(list_trees: List[nltk.Tree], src_to_tgt_grammar, src_to_tgt_dictionary, remove_space):
+def translate_trees_grammar(list_trees: List[nltk.Tree], src_to_tgt_grammar, src_to_tgt_dictionary, remove_space, prefered_pattern):
 
     # translated sentence map with number of grammar substitution found
     trans_map = {}
+
+    # check the prefered patterns for disambiguity
+    if len(list_trees) > 1:
+        list_trees = disambiguity_based_on_pattern(list_trees, prefered_pattern)
 
     for tree in list_trees:
         # Translate grammar
