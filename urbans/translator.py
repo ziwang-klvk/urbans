@@ -119,7 +119,7 @@ class Translator:
         translated_sentences = []
         failed_sentences = []
         # A trans_maps collect all translated versions occurred by ambiguities of sentences, together with their displacements. 
-        trans_maps = []
+        trans_maps = {}
 
         for sentence in tqdm(sentences):
             sentence = self.__process_text_input(sentence)
@@ -130,7 +130,7 @@ class Translator:
                 continue
             trans_sentence, trans_map = translate_trees_grammar(list_trees, self.src_to_tgt_grammar, self.src_to_tgt_dictionary, remove_space=remove_space, prefered_pattern=prefered_pattern)
             if len(trans_map) > 1:
-                trans_maps.append(trans_map)
+                trans_maps[sentence] = trans_map
             translated_sentences.append(trans_sentence)
 
         # String to display failed sentence
