@@ -70,23 +70,24 @@ def disambiguity_based_on_pattern(tree_list, prefered_pattern):
     """
     matched_tree = []
     unmatched_tree = []
+    num_match_to_tree = {}
     for tree in tree_list:
         grammar_str_set = set()
         ptree = tree_to_ptree(tree)
+        num_match = 0
         for sub in ptree.subtrees():
             grammar_str = build_grammar_str_from_left_most(sub)
             grammar_str_set.add(grammar_str)
         for pattern in prefered_pattern:
             if pattern.issubset(grammar_str_set):
-                matched_tree.append(tree)
-                break
-            else:
-                unmatched_tree.append(tree)
-    if len(matched_tree) == 0:
-        return unmatched_tree
-    else:
-        return matched_tree
-        
+                num_match += 1
+        try:
+            num_match_to_tree[num_match].append(tree)
+        except:
+            num_match_to_tree[num_match] = [tree]
+
+    # return the trees with most matched patterns
+    return num_match_to_tree[max(num_match_to_tree)]
         
 
 
