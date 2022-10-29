@@ -104,7 +104,7 @@ class Translator:
         return tag_word_set, failed_sentences, ambiguity_sentences
 
 
-    def translate(self, sentences: List[str] or str, remove_space = False, prefered_pattern=[], allow_multiple_translation = False):
+    def translate(self, sentences: List[str] or str, remove_space = False, prefered_pattern=[], verbose=False, allow_multiple_translation = False):
         """
         Translate a list of sentences
         Args:
@@ -120,18 +120,32 @@ class Translator:
         failed_sentences = []
         # A trans_maps collect all translated versions occurred by ambiguities of sentences, together with their displacements. 
         trans_maps = {}
-
-        for sentence in tqdm(sentences):
-            sentence = self.__process_text_input(sentence)
-            trees = self.parser.parse(sentence.split())
-            list_trees = [tree for tree in trees]
-            if len(list_trees) == 0:
-                failed_sentences.append(sentence)
-                continue
-            trans_sentence, trans_map = translate_trees_grammar(list_trees, self.src_to_tgt_grammar, self.src_to_tgt_dictionary, remove_space=remove_space, prefered_pattern=prefered_pattern)
-            if len(trans_map) > 1:
-                trans_maps[sentence] = trans_map
-            translated_sentences.append(trans_sentence)
+        
+        if verbose == True:
+            for sentence in tqdm(sentences):
+                sentence = self.__process_text_input(sentence)
+                trees = self.parser.parse(sentence.split())
+                list_trees = [tree for tree in trees]
+                if len(list_trees) == 0:
+                    failed_sentences.append(sentence)
+                    continue
+                trans_sentence, trans_map = translate_trees_grammar(list_trees, self.src_to_tgt_grammar, self.src_to_tgt_dictionary, remove_space=remove_space, prefered_pattern=prefered_pattern)
+                if len(trans_map) > 1:
+                    trans_maps[sentence] = trans_map
+                translated_sentences.append(trans_sentence)
+        
+        if verbose == False:
+            for sentence in sentences:
+                sentence = self.__process_text_input(sentence)
+                trees = self.parser.parse(sentence.split())
+                list_trees = [tree for tree in trees]
+                if len(list_trees) == 0:
+                    failed_sentences.append(sentence)
+                    continue
+                trans_sentence, trans_map = translate_trees_grammar(list_trees, self.src_to_tgt_grammar, self.src_to_tgt_dictionary, remove_space=remove_space, prefered_pattern=prefered_pattern)
+                if len(trans_map) > 1:
+                    trans_maps[sentence] = trans_map
+                translated_sentences.append(trans_sentence)
 
         # String to display failed sentence
         failed_sentences = '\n'.join(failed_sentences)
